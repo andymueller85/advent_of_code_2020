@@ -1,4 +1,4 @@
-require('fs').readFile('./day_01/input.txt', 'utf8', (err, data) => {
+require('fs').readFile('./day_01/input.txt', 'utf8', (_, data) => {
   if (err) {
     console.error(err)
     return

@@ -1,4 +1,4 @@
-require('fs').readFile('./day_02/input.txt', 'utf8', (err, data) => {
+require('fs').readFile('./day_02/input.txt', 'utf8', (_, data) => {
   console.log(
     'Valid password count:',
     data
