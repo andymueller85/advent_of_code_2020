@@ -9,21 +9,28 @@
       "request": "launch",
       "name": "Day 9",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}\\day_09\\day_09.js"
+      "program": "${workspaceFolder}/day_09/day_09.js"
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Day 10a",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}\\day_10\\day_10a.js"
+      "program": "${workspaceFolder}/day_10/day_10a.js"
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Day 10b",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}\\day_10\\day_10b.js"
+      "program": "${workspaceFolder}/day_10/day_10b.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 11a",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_11/day_11a.js"
     }
   ]
 }
