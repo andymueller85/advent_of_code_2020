@@ -4,40 +4,41 @@ const input = require('fs')
   .filter(d => d)
   .map(i => i.split(''))
 
-const isSeat = s => s !== '.'
-const isEmpty = s => s === 'L'
-const isOccupied = s => s === '#'
+const OCCUPIED_SEAT = '#'
+const EMPTY_SEAT = 'L'
+
+const isEmpty = s => s === EMPTY_SEAT
+const isOccupied = s => s === OCCUPIED_SEAT
 const colCt = input[0].length
 const rowCt = input.length
 
-const getAdjacentRowCount = (rowArr, col) =>
+const getAdjRowCount = (rowArr, col) =>
   rowArr
     .slice(col > 0 ? col - 1 : 0, col < colCt - 1 ? col + 2 : colCt)
     .filter(s => isOccupied(s)).length
 
-const getAdjacentSeatCount = (seatArr, row, col) => {
-  const aboveCt = row > 0 ? getAdjacentRowCount(seatArr[row - 1], col) : 0
+const getAdjSeatCount = (seatArr, row, col) => {
+  const aboveCt = row > 0 ? getAdjRowCount(seatArr[row - 1], col) : 0
   const leftCt = col > 0 && isOccupied(seatArr[row][col - 1]) ? 1 : 0
   const rightCt = col < colCt - 1 && isOccupied(seatArr[row][col + 1]) ? 1 : 0
-  const belowCt =
-    row < rowCt - 1 ? getAdjacentRowCount(seatArr[row + 1], col) : 0
+  const belowCt = row < rowCt - 1 ? getAdjRowCount(seatArr[row + 1], col) : 0
 
   return aboveCt + leftCt + rightCt + belowCt
 }
 
 const processSeat = (seatArr, row, col) => {
-  const adjacentSeatCount = getAdjacentSeatCount(seatArr, row, col)
+  const adjacentSeatCount = getAdjSeatCount(seatArr, row, col)
 
-  if (isEmpty(seatArr[row][col]) && adjacentSeatCount === 0) return '#'
-  else if (isOccupied(seatArr[row][col]) && adjacentSeatCount >= 4) return 'L'
+  if (isEmpty(seatArr[row][col]) && adjacentSeatCount === 0)
+    return OCCUPIED_SEAT
+  else if (isOccupied(seatArr[row][col]) && adjacentSeatCount >= 4)
+    return EMPTY_SEAT
   else return seatArr[row][col]
 }
 
 const processArrivals = curSeatArr =>
   curSeatArr.map((row, rowIdx, a) =>
-    row.map((seat, colIdx) =>
-      isSeat(seat) ? processSeat(a, rowIdx, colIdx) : seat
-    )
+    row.map((_, colIdx) => processSeat(a, rowIdx, colIdx))
   )
 
 let prevState = input
@@ -52,7 +53,7 @@ const countOccupiedSeats = arr =>
   arr.reduce(
     (sum, row) =>
       sum +
-      row.reduce((rowSum, seat) => rowSum + (isOccupied(seat) ? 1 : 0), 0),
+      row.reduce((rowSum, spot) => rowSum + (isOccupied(spot) ? 1 : 0), 0),
     0
   )
 
