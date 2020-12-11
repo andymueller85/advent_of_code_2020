@@ -1,0 +1,29 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 9",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}\\day_9\\day9.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 10a",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}\\day_10\\day10a.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 10b",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}\\day_10\\day10b.js"
+    }
+  ]
+}
