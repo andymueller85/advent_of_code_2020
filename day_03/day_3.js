@@ -1,4 +1,4 @@
-require('fs').readFile('./day_3/input.txt', 'utf8', (err, data) => {
+require('fs').readFile('./day_03/input.txt', 'utf8', (err, data) => {
   const input = data.split('\n').filter(d => d)
 
   const t = (down, right) => {

@@ -1,4 +1,4 @@
-require('fs').readFile('./day_6/input.txt', 'utf8', (err, data) => {
+require('fs').readFile('./day_06/input.txt', 'utf8', (err, data) => {
   console.log(
     'The sum is:',
     data.split('\n\n').reduce(

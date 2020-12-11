@@ -11,7 +11,7 @@ const validHeight = val => {
   return false
 }
 
-require('fs').readFile('./day_4/input.txt', 'utf8', (err, data) => {
+require('fs').readFile('./day_04/input.txt', 'utf8', (err, data) => {
   console.log(
     'Valid passports:',
     data.split('\n\n').filter(pass => {

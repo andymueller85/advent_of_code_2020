@@ -1,6 +1,6 @@
 let stopIndex = 0
 
-require('fs').readFile('./day_1/input.txt', 'utf8', (err, data) => {
+require('fs').readFile('./day_01/input.txt', 'utf8', (err, data) => {
   if (err) {
     console.error(err)
     return

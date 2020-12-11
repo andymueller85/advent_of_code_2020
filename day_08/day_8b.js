@@ -1,4 +1,4 @@
-require('fs').readFile('./day_8/input.txt', 'utf8', (err, data) => {
+require('fs').readFile('./day_08/input.txt', 'utf8', (err, data) => {
   const scrubbedInput = data
     .split('\n')
     .filter(d => d)

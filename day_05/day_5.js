@@ -14,7 +14,7 @@ const getRow = pass =>
 const getSeat = pass =>
   getPosition([...pass].slice(7), 'L', { low: 0, high: 7 })
 
-require('fs').readFile('./day_5/input.txt', 'utf8', (err, data) => {
+require('fs').readFile('./day_05/input.txt', 'utf8', (err, data) => {
   if (err) {
     console.error(err)
     return
