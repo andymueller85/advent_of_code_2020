@@ -34,8 +34,10 @@ const processSeat = (seatArr, row, col) => {
 }
 
 const processArrivals = curSeatArr =>
-  curSeatArr.map((row, x, a) =>
-    row.map((seat, y) => (isSeat(seat) ? processSeat(a, x, y) : seat))
+  curSeatArr.map((row, rowIdx, a) =>
+    row.map((seat, colIdx) =>
+      isSeat(seat) ? processSeat(a, rowIdx, colIdx) : seat
+    )
   )
 
 let prevState = input
