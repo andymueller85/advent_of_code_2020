@@ -1,4 +1,4 @@
-require('fs').readFile('./day_07/input.txt', 'utf8', (err, data) => {
+require('fs').readFile('./day_07/input.txt', 'utf8', (_, data) => {
   const nestingDoll = data
     .split('\n')
     .filter(d => d)

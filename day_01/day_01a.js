@@ -1,8 +1,4 @@
-require('fs').readFile('./day_01/input.txt', 'utf8', (err, data) => {
-  if (err) {
-    console.error(err)
-    return
-  }
+require('fs').readFile('./day_01/input.txt', 'utf8', (_, data) => {
   let answer = 0
 
   data

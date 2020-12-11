@@ -1,11 +1,4 @@
-let stopIndex = 0
-
-require('fs').readFile('./day_01/input.txt', 'utf8', (err, data) => {
-  if (err) {
-    console.error(err)
-    return
-  }
-
+require('fs').readFile('./day_01/input.txt', 'utf8', (_, data) => {
   const input = data
     .split('\n')
     .filter(d => d)
@@ -13,14 +6,7 @@ require('fs').readFile('./day_01/input.txt', 'utf8', (err, data) => {
     .sort((a, b) => a - b)
 
   // find the index of the element whose sum with the lowest two elements puts us over 2020
-  input.some((val, i, a) => {
-    if (a[0] + a[1] + a[i] >= 2020) {
-      stopIndex = i
-      return true
-    }
-  })
-
-  // can chop off the rest
+  const stopIndex = input.findIndex((val, i, a) => a[0] + a[1] + a[i] >= 2020)
   const choppedInput = input.slice(0, stopIndex)
 
   const addEmUp = startVal =>
@@ -35,7 +21,6 @@ require('fs').readFile('./day_01/input.txt', 'utf8', (err, data) => {
           return (answerFound = true)
         }
 
-        // No need to continue
         if (sum > 2020) return true
       })
 
