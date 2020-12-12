@@ -14,20 +14,6 @@ const isOccupied = s => s === OCCUPIED_SEAT
 const colCt = input[0].length
 const rowCt = input.length
 
-const getAdjRowCount = (rowArr, col) =>
-  rowArr
-    .slice(col > 0 ? col - 1 : 0, col < colCt - 1 ? col + 2 : colCt)
-    .filter(s => isOccupied(s)).length
-
-const getAdjSeatCount = (seatArr, row, col) => {
-  const aboveCt = row > 0 ? getAdjRowCount(seatArr[row - 1], col) : 0
-  const leftCt = col > 0 && isOccupied(seatArr[row][col - 1]) ? 1 : 0
-  const rightCt = col < colCt - 1 && isOccupied(seatArr[row][col + 1]) ? 1 : 0
-  const belowCt = row < rowCt - 1 ? getAdjRowCount(seatArr[row + 1], col) : 0
-
-  return aboveCt + leftCt + rightCt + belowCt
-}
-
 const getVisibleOccupiedSeatCount = (seatArr, row, col) => {
   let n = 0,
     ne = 0,
