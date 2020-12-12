@@ -9,14 +9,14 @@
       "request": "launch",
       "name": "Day 1a",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}\\day_01\\day_01a.js"
+      "program": "${workspaceFolder}/day_01/day_01a.js"
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Day 1b",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}\\day_01\\day_01b.js"
+      "program": "${workspaceFolder}/day_01/day_01b.js"
     },
     {
       "type": "node",
