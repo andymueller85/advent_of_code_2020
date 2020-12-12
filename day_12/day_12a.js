@@ -28,8 +28,8 @@ const moveShip = (dir, val) => {
 
 const directions = [N, E, S, W]
 
-const turnClockwise = deg => {
-  const ticks = deg / 90
+const turnShip = (dir, deg) => {
+  const ticks = dir === R ? deg / 90 : (360 - deg) / 90
 
   const curHeadingIndex = directions.findIndex(a => a === heading)
   heading =
@@ -40,28 +40,11 @@ const turnClockwise = deg => {
     ]
 }
 
-const turnCounterClockwise = deg => {
-  const ticks = deg / 90
-
-  const curHeadingIndex = directions.findIndex(a => a === heading)
-  heading =
-    directions[
-      curHeadingIndex - ticks < 0
-        ? curHeadingIndex - ticks + directions.length
-        : curHeadingIndex - ticks
-    ]
-}
-
-const turnShip = (dir, val) => {
-  if (dir === R) turnClockwise(val)
-  else turnCounterClockwise(val)
-}
-
 input.forEach(i => {
-  if (isMoveAction(i.act)) {
+  if (isMoveAction(i.act))
     if (i.act === F) moveShip(heading, i.val)
     else moveShip(i.act, i.val)
-  } else turnShip(i.act, i.val)
+  else turnShip(i.act, i.val)
 })
 
 console.log({ xPos, yPos, answer: Math.abs(xPos) + Math.abs(yPos) })
