@@ -1,6 +1,6 @@
 const input = require('fs')
   .readFileSync('./day_12/input.txt', 'utf8')
-  .split('\n')
+  .split(/\r?\n/)
   .filter(d => d)
   .map(d => d.match(/(^[a-z]+|[A-Z]+)([0-9]+$)/))
   .map(d => ({ act: d[1], val: parseInt(d[2], 10) }))
@@ -15,7 +15,7 @@ const R = 'R'
 
 const isMoveAction = a => [N, S, E, W, F].includes(a)
 const isXMove = a => [E, W].includes(a)
-isPositiveMove = a => [N, E].includes(a)
+const isPositiveMove = a => [N, E].includes(a)
 
 let shipXPos = 0
 let shipYPos = 0

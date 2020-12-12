@@ -1,6 +1,6 @@
 const input = require('fs')
   .readFileSync('./day_12/input.txt', 'utf8')
-  .split('\n')
+  .split(/\r?\n/)
   .filter(d => d)
   .map(d => d.match(/(^[a-z]+|[A-Z]+)([0-9]+$)/))
   .map(d => ({ act: d[1], val: parseInt(d[2], 10) }))
