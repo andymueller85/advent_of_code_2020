@@ -19,49 +19,27 @@ const check = (length, mapFn) =>
     ? 1
     : 0
 
-const getVisibleOccupiedSeatCount = (seatArr, row, col) => {
-  let ct = 0
-
-  // north
-  ct += check(row, (_, i) => seatArr[row - 1 - i][col])
-
-  // northeast
-  ct += check(
+const getOccupiedSeatCount = (seatArr, row, col) =>
+  check(row, (_, i) => seatArr[row - 1 - i][col]) + // north
+  check(
     Math.min(row, colCt - col - 1),
     (_, i) => seatArr[row - 1 - i][i + col + 1]
-  )
-
-  // east
-  ct += isOccupied(seatArr[row].slice(col + 1).find(seat => isSeat(seat)))
-    ? 1
-    : 0
-
-  // southeast
-  ct += check(
+  ) + // northeast
+  (isOccupied(seatArr[row].slice(col + 1).find(seat => isSeat(seat))) ? 1 : 0) + // east
+  check(
     Math.min(rowCt - row, colCt - col) - 1,
     (_, i) => seatArr[i + row + 1][i + col + 1]
-  )
-
-  // south
-  ct += check(rowCt - row - 1, (_, i) => seatArr[i + row + 1][col])
-
-  // southwest
-  ct += check(
+  ) + // southeast
+  check(rowCt - row - 1, (_, i) => seatArr[i + row + 1][col]) + // south
+  check(
     Math.min(rowCt - row - 1, col),
     (_, i) => seatArr[i + row + 1][col - 1 - i]
-  )
-
-  // west
-  ct += check(col, (_, i) => seatArr[row][col - 1 - i])
-
-  // northwest
-  ct += check(Math.min(row, col), (_, i) => seatArr[row - 1 - i][col - 1 - i])
-
-  return ct
-}
+  ) + // southwest
+  check(col, (_, i) => seatArr[row][col - 1 - i]) + // west
+  check(Math.min(row, col), (_, i) => seatArr[row - 1 - i][col - 1 - i]) // northwest
 
 const processSeat = (seatArr, row, col) => {
-  const ct = getVisibleOccupiedSeatCount(seatArr, row, col)
+  const ct = getOccupiedSeatCount(seatArr, row, col)
 
   if (isEmpty(seatArr[row][col]) && ct === 0) return OCCUPIED_SEAT
   else if (isOccupied(seatArr[row][col]) && ct >= 5) return EMPTY_SEAT
