@@ -7,92 +7,57 @@ const input = require('fs')
 const FLOOR = '.'
 const OCCUPIED_SEAT = '#'
 const EMPTY_SEAT = 'L'
-
-const isSeat = s => s !== FLOOR
-const isEmpty = s => s === EMPTY_SEAT
-const isOccupied = s => s === OCCUPIED_SEAT
+const isSeat = s => s && s !== FLOOR
+const isEmpty = s => s && s === EMPTY_SEAT
+const isOccupied = s => s && s === OCCUPIED_SEAT
 const colCt = input[0].length
 const rowCt = input.length
 
+const check = (length, mapFn) =>
+  length > 0 &&
+  isOccupied(Array.from({ length }, mapFn).find(seat => isSeat(seat)))
+    ? 1
+    : 0
+
 const getVisibleOccupiedSeatCount = (seatArr, row, col) => {
-  let n = 0,
-    ne = 0,
-    e = 0,
-    se = 0,
-    s = 0,
-    sw = 0,
-    w = 0,
-    nw = 0
+  let ct = 0
 
-  if (row > 0) {
-    const nRow =
-      Array.from({ length: row }, (_, i) => row - 1 - i).find(rowI =>
-        isSeat(seatArr[rowI][col])
-      ) ?? -1
+  // north
+  ct += check(row, (_, i) => seatArr[row - 1 - i][col])
 
-    n = nRow > -1 && isOccupied(seatArr[nRow][col]) ? 1 : 0
-  }
+  // northeast
+  ct += check(
+    Math.min(row, colCt - col - 1),
+    (_, i) => seatArr[row - 1 - i][i + col + 1]
+  )
 
-  if (row > 0 && col < colCt - 1) {
-    const [neRow, neCol] = Array.from(
-      { length: Math.min(row, colCt - col - 1) },
-      (_, i) => [row - 1 - i, i + col + 1]
-    ).find(([rowI, colI]) => isSeat(seatArr[rowI][colI])) ?? [-1, -1]
+  // east
+  ct += isOccupied(seatArr[row].slice(col + 1).find(seat => isSeat(seat)))
+    ? 1
+    : 0
 
-    ne = neRow > -1 && neCol > -1 && isOccupied(seatArr[neRow][neCol]) ? 1 : 0
-  }
+  // southeast
+  ct += check(
+    Math.min(rowCt - row, colCt - col) - 1,
+    (_, i) => seatArr[i + row + 1][i + col + 1]
+  )
 
-  e =
-    col < colCt - 1 &&
-    isOccupied(seatArr[row].slice(col + 1).find(seat => isSeat(seat)))
-      ? 1
-      : 0
+  // south
+  ct += check(rowCt - row - 1, (_, i) => seatArr[i + row + 1][col])
 
-  if (col < colCt - 1 && row < rowCt - 1) {
-    const [seRow, seCol] = Array.from(
-      { length: Math.min(rowCt - row, colCt - col) - 1 },
-      (_, i) => [i + row + 1, i + col + 1]
-    ).find(([rowI, colI]) => isSeat(seatArr[rowI][colI])) ?? [-1, -1]
+  // southwest
+  ct += check(
+    Math.min(rowCt - row - 1, col),
+    (_, i) => seatArr[i + row + 1][col - 1 - i]
+  )
 
-    se = seRow > -1 && seCol > -1 && isOccupied(seatArr[seRow][seCol]) ? 1 : 0
-  }
+  // west
+  ct += check(col, (_, i) => seatArr[row][col - 1 - i])
 
-  if (row < rowCt - 1) {
-    const sRow = Array.from(
-      { length: rowCt - row - 1 },
-      (_, i) => i + row + 1
-    ).find(rowI => isSeat(seatArr[rowI][col]))
+  // northwest
+  ct += check(Math.min(row, col), (_, i) => seatArr[row - 1 - i][col - 1 - i])
 
-    s = sRow > -1 && isOccupied(seatArr[sRow][col]) ? 1 : 0
-  }
-
-  if (row < rowCt - 1 && col > 0) {
-    const [swRow, swCol] = Array.from(
-      { length: Math.min(rowCt - row - 1, col) },
-      (_, i) => [i + row + 1, col - 1 - i]
-    ).find(([rowI, colI]) => isSeat(seatArr[rowI][colI])) ?? [-1, -1]
-
-    sw = swRow > -1 && swCol > -1 && isOccupied(seatArr[swRow][swCol]) ? 1 : 0
-  }
-
-  if (col > 0) {
-    const wCol = Array.from({ length: col }, (_, i) => col - 1 - i).find(colI =>
-      isSeat(seatArr[row][colI])
-    )
-
-    w = wCol > -1 && isOccupied(seatArr[row][wCol]) ? 1 : 0
-  }
-
-  if (row > 0 && col > 0) {
-    const [nwRow, nwCol] = Array.from(
-      { length: Math.min(row, col) },
-      (_, i) => [row - 1 - i, col - 1 - i]
-    ).find(([rowI, colI]) => isSeat(seatArr[rowI][colI])) ?? [-1, -1]
-
-    nw = nwRow > -1 && nwCol > -1 && isOccupied(seatArr[nwRow][nwCol]) ? 1 : 0
-  }
-
-  return e + s + w + n + se + sw + nw + ne
+  return ct
 }
 
 const processSeat = (seatArr, row, col) => {
