@@ -1,4 +1,4 @@
-const input = require('fs')
+const buses = require('fs')
   .readFileSync('./day_13/input.txt', 'utf8')
   .split(/\r?\n/)
   .filter(d => d)[1]
@@ -6,23 +6,22 @@ const input = require('fs')
   .map(t => parseInt(t, 10) || t)
 
 const isBus = b => Number.isInteger(b)
-const getTimestamp = (buses, minute, increment) => {
-  while (!buses.every((b, idx) => !isBus(b) || (minute + idx) % b === 0))
+const getTimestamp = (minute, increment, index) => {
+  const slice = buses.slice(
+    0,
+    buses.findIndex((b, i) => i > index && isBus(b)) + 1
+  )
+
+  while (!slice.every((b, idx) => !isBus(b) || (minute + idx) % b === 0))
     minute += increment
 
-  return input.length === buses.length
+  return slice.length >= buses.length
     ? minute
     : getTimestamp(
-        buses.concat(
-          ...input.slice(
-            buses.length,
-            input.findIndex((b, idx) => idx >= buses.length && isBus(b)) + 1
-          )
-        ),
         minute,
-        buses.reduce((acc, b) => acc * (isBus(b) ? b : 1))
+        slice.reduce((acc, b) => acc * (isBus(b) ? b : 1)),
+        slice.length - 1
       )
 }
 
-const nextBus = input.findIndex((b, i) => i > 0 && isBus(b)) + 1
-console.log('answer:', getTimestamp(input.slice(0, nextBus), 0, 1))
+console.log('answer:', getTimestamp(0, 1, 0))
