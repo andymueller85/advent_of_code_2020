@@ -12,7 +12,7 @@ const getTimestamp = (minute, increment, index) => {
     buses.findIndex((b, i) => i > index && isBus(b)) + 1
   )
 
-  while (!slice.every((b, idx) => !isBus(b) || (minute + idx) % b === 0))
+  while (!slice.every((b, i) => !isBus(b) || (minute + i) % b === 0))
     minute += increment
 
   return slice.length >= buses.length
