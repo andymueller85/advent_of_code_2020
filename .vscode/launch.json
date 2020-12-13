@@ -1,0 +1,71 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 1a",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_01/day_01a.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 1b",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_01/day_01b.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 9",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_09/day_09.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 10a",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_10/day_10a.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 10b",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_10/day_10b.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 11a",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_11/day_11a.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 11b",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_11/day_11b.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 12a",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_12/day_12a.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 12b",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_12/day_12b.js"
+    }
+  ]
+}
