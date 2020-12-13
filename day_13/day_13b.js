@@ -5,7 +5,7 @@ const input = require('fs')
   .split(',')
   .map(t => parseInt(t, 10) || t)
 
-const isBus = b => b !== 'x'
+const isBus = b => Number.isInteger(b)
 const getTimestamp = (buses, minute, increment) => {
   while (!buses.every((b, idx) => !isBus(b) || (minute + idx) % b === 0))
     minute += increment
