@@ -5,21 +5,20 @@ const buses = require('fs')
   .split(',')
   .map(t => parseInt(t, 10) || t)
 
-const isBus = b => Number.isInteger(b)
 const getTimestamp = (minute, increment, index) => {
   const slice = buses.slice(
     0,
-    buses.findIndex((b, i) => i > index && isBus(b)) + 1
+    buses.findIndex((b, i) => i > index && Number.isInteger(b)) + 1
   )
 
-  while (!slice.every((b, i) => !isBus(b) || (minute + i) % b === 0))
+  while (!slice.every((b, i) => !Number.isInteger(b) || (minute + i) % b === 0))
     minute += increment
 
   return slice.length >= buses.length
     ? minute
     : getTimestamp(
         minute,
-        slice.reduce((acc, b) => acc * (isBus(b) ? b : 1)),
+        slice.reduce((acc, b) => acc * (Number.isInteger(b) ? b : 1)),
         slice.length - 1
       )
 }
