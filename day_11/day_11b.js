@@ -25,7 +25,7 @@ const getOccupiedSeatCount = (seatArr, row, col) =>
     Math.min(row, colCt - col - 1),
     (_, i) => seatArr[row - 1 - i][i + col + 1]
   ) + // northeast
-  (isOccupied(seatArr[row].slice(col + 1).find(seat => isSeat(seat))) ? 1 : 0) + // east
+  check(colCt - col - 1, (_, i) => seatArr[row][i + col + 1]) + // east
   check(
     Math.min(rowCt - row, colCt - col) - 1,
     (_, i) => seatArr[i + row + 1][i + col + 1]
