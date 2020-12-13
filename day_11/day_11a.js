@@ -17,14 +17,11 @@ const getAdjRowCount = (rowArr, col) =>
     .slice(col > 0 ? col - 1 : 0, col < colCt - 1 ? col + 2 : colCt)
     .filter(s => isOccupied(s)).length
 
-const getAdjSeatCount = (seatArr, row, col) => {
-  const aboveCt = row > 0 ? getAdjRowCount(seatArr[row - 1], col) : 0
-  const leftCt = col > 0 && isOccupied(seatArr[row][col - 1]) ? 1 : 0
-  const rightCt = col < colCt - 1 && isOccupied(seatArr[row][col + 1]) ? 1 : 0
-  const belowCt = row < rowCt - 1 ? getAdjRowCount(seatArr[row + 1], col) : 0
-
-  return aboveCt + leftCt + rightCt + belowCt
-}
+const getAdjSeatCount = (seatArr, row, col) => 
+   (row > 0 ? getAdjRowCount(seatArr[row - 1], col) : 0) + // above
+   (col > 0 && isOccupied(seatArr[row][col - 1]) ? 1 : 0) + // left
+   (col < colCt - 1 && isOccupied(seatArr[row][col + 1]) ? 1 : 0) + // right
+   (row < rowCt - 1 ? getAdjRowCount(seatArr[row + 1], col) : 0) // below
 
 const processSeat = (seatArr, row, col) => {
   const adjacentSeatCount = getAdjSeatCount(seatArr, row, col)
