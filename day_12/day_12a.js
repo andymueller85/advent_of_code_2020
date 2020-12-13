@@ -15,7 +15,7 @@ const R = 'R'
 
 const isMoveAction = a => [N, S, E, W, F].includes(a)
 const isXMove = a => [E, W].includes(a)
-isPositiveMove = a => [N, E].includes(a)
+const isPositiveMove = a => [N, E].includes(a)
 
 let heading = E
 let xPos = 0
