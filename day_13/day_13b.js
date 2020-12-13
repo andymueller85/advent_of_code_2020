@@ -10,33 +10,27 @@ const getTimestamp = (busArr, minute, increment) => {
   let found = false
 
   while (!found) {
-    if (
-      busArr.every(
-        (b, idx) =>
-          !Number.isInteger(b) || (Number.isInteger(b) && (i + idx) % b === 0)
-      )
-    ) {
-      found = true
-      if (input.length === busArr.length) {
-        return i
-      } else {
-        const nextArr = busArr.concat(
-          ...input.slice(
-            busArr.length,
-            input.findIndex(
-              (b, i) => i >= busArr.length && Number.isInteger(b)
-            ) + 1
-          )
-        )
-
-        return getTimestamp(
-          nextArr,
-          i,
-          busArr.reduce((acc, b) => acc * (Number.isInteger(b) ? b : 1))
-        )
-      }
-    } else {
+    found = busArr.every(
+      (b, idx) =>
+        !Number.isInteger(b) || (Number.isInteger(b) && (i + idx) % b === 0)
+    )
+    if (!found) {
       i += increment
+    } else {
+      return input.length === busArr.length
+        ? i
+        : getTimestamp(
+            busArr.concat(
+              ...input.slice(
+                busArr.length,
+                input.findIndex(
+                  (b, i) => i >= busArr.length && Number.isInteger(b)
+                ) + 1
+              )
+            ),
+            i,
+            busArr.reduce((acc, b) => acc * (Number.isInteger(b) ? b : 1))
+          )
     }
   }
 }
