@@ -5,42 +5,24 @@ const input = require('fs')
   .split(',')
   .map(t => parseInt(t, 10) || t)
 
-const getTimestamp = (busArr, minute, increment) => {
-  let found = false
+const isBus = b => b !== 'x'
+const getTimestamp = (buses, minute, increment) => {
+  while (!buses.every((b, idx) => !isBus(b) || (minute + idx) % b === 0))
+    minute += increment
 
-  while (!found) {
-    found = busArr.every(
-      (b, idx) =>
-        !Number.isInteger(b) ||
-        (Number.isInteger(b) && (minute + idx) % b === 0)
-    )
-
-    if (!found) {
-      minute += increment
-    } else {
-      return input.length === busArr.length
-        ? minute
-        : getTimestamp(
-            busArr.concat(
-              ...input.slice(
-                busArr.length,
-                input.findIndex(
-                  (b, idx) => idx >= busArr.length && Number.isInteger(b)
-                ) + 1
-              )
-            ),
-            minute,
-            busArr.reduce((acc, b) => acc * (Number.isInteger(b) ? b : 1))
+  return input.length === buses.length
+    ? minute
+    : getTimestamp(
+        buses.concat(
+          ...input.slice(
+            buses.length,
+            input.findIndex((b, idx) => idx >= buses.length && isBus(b)) + 1
           )
-    }
-  }
+        ),
+        minute,
+        buses.reduce((acc, b) => acc * (isBus(b) ? b : 1))
+      )
 }
 
-console.log(
-  'success!',
-  getTimestamp(
-    input.slice(0, input.findIndex((b, i) => i > 0 && Number.isInteger(b)) + 1),
-    0,
-    1
-  )
-)
+const nextBus = input.findIndex((b, i) => i > 0 && isBus(b)) + 1
+console.log('answer:', getTimestamp(input.slice(0, nextBus), 0, 1))
