@@ -1,20 +1,17 @@
-const input = require('fs')
+const [departure, schedule] = require('fs')
   .readFileSync('./day_13/input.txt', 'utf8')
   .split(/\r?\n/)
   .filter(d => d)
 
-const departure = parseInt(input[0], 10)
-const { bus, nextDeparture } = input[1]
+const { bus, nextDeparture } = schedule
   .split(',')
-  .filter(t => t !== 'x')
-  .map(t => parseInt(t, 10))
-  .map(t => ({
-    bus: t,
-    nextDeparture: t - (departure % t)
+  .filter(b => b !== 'x')
+  .map(b => parseInt(b, 10))
+  .map(b => ({
+    bus: b,
+    nextDeparture: b - (parseInt(departure, 10) % b)
   }))
-  .reduce((min, { bus, nextDeparture }) =>
-    nextDeparture < min.nextDeparture ? { bus, nextDeparture } : min
-  )
+  .reduce((min, b) => (b.nextDeparture < min.nextDeparture ? b : min))
 
 console.log({
   bus,
