@@ -3,17 +3,14 @@ const input = require('fs')
   .split(/\r?\n/)
   .filter(d => d)
   .reduce((acc, cur, i, a) => {
+    const isMask = l => l.startsWith('mask')
     let instrGroup = []
-    if (cur.startsWith('mask')) {
-      const nextGroupIndex = a.findIndex(
-        (l, curI) => curI > i && l.startsWith('mask')
-      )
+    if (isMask(cur)) {
+      const nextGroupIndex = a.findIndex((l, curI) => curI > i && isMask(l))
       instrGroup = a.slice(i, nextGroupIndex === -1 ? a.length : nextGroupIndex)
       const mask = instrGroup[0].replace('mask = ', '')
-
-      const instructions = instrGroup.slice(1).map(a => {
-        const [addr, val] = a.split(' = ')
-
+      const instructions = instrGroup.slice(1).map(g => {
+        const [addr, val] = g.split(' = ')
         return [addr.replace('mem[', '').replace(']', ''), parseInt(val, 10)]
       })
 
@@ -22,29 +19,30 @@ const input = require('fs')
     return acc
   }, [])
 
-let mem = {}
-
 const applyMask = (instr, mask) => {
-  revMask = mask.split('').reverse()
-  revInstr = [
+  const revMask = mask.split('').reverse()
+  const revInstr = [
     ...instr.split('').reverse(),
     ...Array.from({ length: 36 - instr.length }, _ => '0')
   ]
 
   return parseInt(
     revInstr
-      .map((r, i) => (r = revMask[i] !== 'X' ? revMask[i] : r))
+      .map((r, i) => (revMask[i] !== 'X' ? revMask[i] : r))
       .reverse()
       .join(''),
     2
   )
 }
+
+let memory = {}
 input.forEach(({ mask, instructions }) => {
   instructions.forEach(([addr, val]) => {
-    mem = { ...mem, [addr]: applyMask(val.toString(2), mask) }
+    memory = { ...memory, [addr]: applyMask(val.toString(2), mask) }
   })
 })
 
-const sum = Object.values(mem).reduce((sum, m) => sum + m)
-
-console.log({ sum })
+console.log(
+  'sum',
+  Object.values(memory).reduce((acc, m) => acc + m)
+)
