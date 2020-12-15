@@ -19,21 +19,14 @@ const input = require('fs')
     return acc
   }, [])
 
-const applyMask = (instr, mask) => {
-  const revMask = mask.split('').reverse()
-  const revInstr = [
-    ...instr.split('').reverse(),
-    ...Array.from({ length: 36 - instr.length }, _ => '0')
-  ]
-
-  return parseInt(
-    revInstr
-      .map((r, i) => (revMask[i] !== 'X' ? revMask[i] : r))
-      .reverse()
+const applyMask = (instr, mask) =>
+  parseInt(
+    Array.from({ length: 36 - instr.length }, _ => '0')
+      .concat(instr.split(''))
+      .map((r, i) => (mask[i] !== 'X' ? mask[i] : r))
       .join(''),
     2
   )
-}
 
 let memory = {}
 input.forEach(({ mask, instructions }) => {
@@ -44,5 +37,5 @@ input.forEach(({ mask, instructions }) => {
 
 console.log(
   'sum',
-  Object.values(memory).reduce((acc, m) => acc + m)
+  Object.values(memory).reduce((acc, m) => acc + m) // 9615006043476
 )

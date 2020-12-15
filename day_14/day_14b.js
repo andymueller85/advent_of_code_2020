@@ -36,14 +36,11 @@ const getMemAddrs = addrs => {
 
 const applyMask = (val, mask) => {
   const binaryVal = Number(val).toString(2)
-  const maskArr = mask.split('')
 
-  return (
-    Array.from({ length: 36 - binaryVal.length }, _ => '0')
-      .concat(binaryVal.split(''))
-      .map((r, i) => (maskArr[i] !== '0' ? maskArr[i] : r))
-      .join('')
-  )
+  return Array.from({ length: 36 - binaryVal.length }, _ => '0')
+    .concat(binaryVal.split(''))
+    .map((r, i) => (mask[i] !== '0' ? mask[i] : r))
+    .join('')
 }
 
 let memory = {}
