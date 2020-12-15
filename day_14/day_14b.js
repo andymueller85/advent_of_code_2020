@@ -19,37 +19,31 @@ const input = require('fs')
     return acc
   }, [])
 
-const replaceAtIndex = (str, val, i) =>
+const replaceAtIndex = (str, i, val) =>
   `${str.slice(0, i)}${val}${str.slice(i + 1)}`
 
 const getMemAddrs = addrs => {
-  const addrWithFloater = addrs.find(a => [...a].includes('X'))
+  const addr = addrs.find(a => [...a].includes('X'))
+  if (!addr) return addrs
 
-  if (!addrWithFloater) {
-    return addrs
-  } else {
-    const firstFloater = [...addrWithFloater].findIndex(c => c === 'X')
-
-    return getMemAddrs([
-      ...addrs.filter(a => a !== addrWithFloater),
-      replaceAtIndex(addrWithFloater, '0', firstFloater),
-      replaceAtIndex(addrWithFloater, '1', firstFloater)
-    ])
-  }
+  const firstFloatIdx = [...addr].findIndex(c => c === 'X')
+  return getMemAddrs([
+    ...addrs.filter(a => a !== addr),
+    replaceAtIndex(addr, firstFloatIdx, '0'),
+    replaceAtIndex(addr, firstFloatIdx, '1')
+  ])
 }
 
 const applyMask = (val, mask) => {
   const binaryVal = Number(val).toString(2)
-  const revMask = mask.split('').reverse()
-  const revInstr = [
-    ...binaryVal.split('').reverse(),
-    ...Array.from({ length: 36 - binaryVal.length }, _ => '0')
-  ]
+  const maskArr = mask.split('')
 
-  return revInstr
-    .map((r, i) => (revMask[i] !== '0' ? revMask[i] : r))
-    .reverse()
-    .join('')
+  return (
+    Array.from({ length: 36 - binaryVal.length }, _ => '0')
+      .concat(binaryVal.split(''))
+      .map((r, i) => (maskArr[i] !== '0' ? maskArr[i] : r))
+      .join('')
+  )
 }
 
 let memory = {}
@@ -58,18 +52,12 @@ input.forEach(({ mask, instructions }) => {
     const addrs = getMemAddrs([applyMask(addr, mask)])
     memory = {
       ...memory,
-      ...addrs.reduce(
-        (acc, cur) => ({
-          ...acc,
-          [parseInt(cur, 2)]: val
-        }),
-        {}
-      )
+      ...addrs.reduce((acc, cur) => ({ ...acc, [parseInt(cur, 2)]: val }), {})
     }
   })
 })
 
 console.log(
   'sum',
-  Object.values(memory).reduce((acc, m) => acc + m)
+  Object.values(memory).reduce((acc, m) => acc + m) // 4275496544925
 )
