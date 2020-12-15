@@ -4,6 +4,7 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
+
     {
       "type": "node",
       "request": "launch",
@@ -94,6 +95,20 @@
       "name": "Day 14b",
       "skipFiles": ["<node_internals>/**"],
       "program": "${workspaceFolder}/day_14/day_14b.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 15a",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_15/day_15a.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 15b",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_15/day_15b.js"
     }
   ]
 }
