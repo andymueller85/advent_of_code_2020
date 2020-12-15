@@ -5,7 +5,7 @@ const buses = require('fs')
   .split(',')
   .map(t => parseInt(t, 10) || t)
 
-const getTimestamp = (minute, increment, index) => {
+const getTimestamp = (minute, index, increment) => {
   const slice = buses.slice(
     0,
     buses.findIndex((b, i) => i > index && Number.isInteger(b)) + 1
@@ -18,9 +18,9 @@ const getTimestamp = (minute, increment, index) => {
     ? minute
     : getTimestamp(
         minute,
+        slice.length - 1,
         slice.reduce((acc, b) => acc * (Number.isInteger(b) ? b : 1)),
-        slice.length - 1
       )
 }
 
-console.log('answer:', getTimestamp(0, 1, 0))
+console.log('answer:', getTimestamp(0, 0, 1)) // 906332393333683
