@@ -19,19 +19,22 @@ const input = require('fs')
     return acc
   }, [])
 
-const applyMask = (instr, mask) =>
-  parseInt(
-    Array.from({ length: 36 - instr.length }, _ => '0')
-      .concat(instr.split(''))
+const applyMask = (val, mask) => {
+  const binaryVal = Number(val).toString(2)
+
+  return parseInt(
+    Array.from({ length: 36 - binaryVal.length }, _ => '0')
+      .concat(binaryVal.split(''))
       .map((r, i) => (mask[i] !== 'X' ? mask[i] : r))
       .join(''),
     2
   )
+}
 
 let memory = {}
 input.forEach(({ mask, instructions }) => {
   instructions.forEach(([addr, val]) => {
-    memory = { ...memory, [addr]: applyMask(val.toString(2), mask) }
+    memory = { ...memory, [addr]: applyMask(val, mask) }
   })
 })
 
