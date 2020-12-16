@@ -1,3 +1,4 @@
+// a little faster - around 3.5 min for 3,000,000
 const numbers = [8, 11, 0, 19, 1, 2]
 const { length } = numbers
 const history = numbers
