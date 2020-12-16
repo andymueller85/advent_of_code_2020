@@ -15,73 +15,58 @@ const myTicket = myTicketGr
   .split(',')
   .map(n => parseInt(n))
 
-const nearbyTickets = nearbyTicketsGr
+const goodTickets = nearbyTicketsGr
   .split(/\r?\n/)
   .slice(1)
   .map(t => t.split(',').map(n => parseInt(n)))
-
-const goodTickets = nearbyTickets.filter(t =>
-  t.every(n => {
-    return rules.some(r =>
-      r.ranges.some(([lower, upper]) => n >= lower && n <= upper)
-    )
-  })
-)
-
-let invalidVals = []
-nearbyTickets.forEach(t => {
-  let ticketInvalidValues = t.filter(n =>
-    rules.every(r => r.ranges.every(([lower, upper]) => n < lower || n > upper))
+  .filter(t =>
+    t.every(n => {
+      return rules.some(r =>
+        r.ranges.some(([lower, upper]) => n >= lower && n <= upper)
+      )
+    })
   )
-  invalidVals.push(...ticketInvalidValues)
-})
 
-const getNewTicketPositions = ticketPositions => {
+const getLabels = ticketPositions => {
   const knownCategories = ticketPositions
     .filter(p => p.length === 1)
     .map(p => p[0])
 
   if (knownCategories.length === myTicket.length) {
-    // we're done, return
     return ticketPositions
   }
 
-  let newTicketPostions = ticketPositions.map(p =>
-    p.length === 1 ? p : p.filter(q => !knownCategories.includes(q))
-  )
-
-  return getNewTicketPositions(newTicketPostions)
-}
-
-let startTicketPositions = myTicket.map(t => [])
-
-for (let i = 0; i < startTicketPositions.length; i++) {
-  let numsAtPosition = goodTickets.map(t => t[i])
-
-  let validLabels = rules.filter(r =>
-    numsAtPosition.every(n =>
-      r.ranges.some(([lower, upper]) => lower <= n && n <= upper)
+  return getLabels(
+    ticketPositions.map(p =>
+      p.length === 1 ? p : p.filter(q => !knownCategories.includes(q))
     )
   )
-
-  startTicketPositions[i].push(...validLabels.map(l => l.rule))
 }
 
-const labels = getNewTicketPositions(startTicketPositions)
-const myTicketWithLabels = myTicket.reduce(
-  (acc, n, i) => ({
-    ...acc,
-    [labels[i]]: n
-  }),
-  {}
+let startTicketPositions = myTicket.map((_, i) =>
+  rules
+    .filter(r =>
+      goodTickets
+        .map(g => g[i])
+        .every(n => r.ranges.some(([lower, upper]) => lower <= n && n <= upper))
+    )
+    .map(r => r.rule)
 )
+
+const labels = getLabels(startTicketPositions)
+
+const myTicketWithLabels = myTicket.map((t, i) => [...labels[i], t])
+// const myTicketWithLabels = myTicket.reduce(
+//   (acc, n, i) => ({
+//     ...acc,
+//     [labels[i]]: n
+//   }),
+//   {}
+// )
 
 console.log({
   myTicketWithLabels,
-  goodTickets,
-  invalidVals,
-  answer: Object.keys(myTicketWithLabels)
-    .filter(k => k.startsWith('departure'))
-    .map(k => myTicketWithLabels[k])
-    .reduce((result, v) => result * v)
+  answer: myTicketWithLabels
+    .filter(([label, _]) => label.startsWith('departure'))
+    .reduce((acc, [_, val]) => acc * val, 1)
 })
