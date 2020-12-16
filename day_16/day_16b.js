@@ -56,13 +56,6 @@ let startTicketPositions = myTicket.map((_, i) =>
 const labels = getLabels(startTicketPositions)
 
 const myTicketWithLabels = myTicket.map((t, i) => [...labels[i], t])
-// const myTicketWithLabels = myTicket.reduce(
-//   (acc, n, i) => ({
-//     ...acc,
-//     [labels[i]]: n
-//   }),
-//   {}
-// )
 
 console.log({
   myTicketWithLabels,
