@@ -115,6 +115,13 @@
       "name": "Day 15 fast",
       "skipFiles": ["<node_internals>/**"],
       "program": "${workspaceFolder}/day_15/day_15_fast.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Day 16a",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/day_16/day_16a.js"
     }
   ]
 }
