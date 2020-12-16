@@ -27,20 +27,19 @@ const goodTickets = nearbyTicketsGr
     })
   )
 
-const getLabels = (possibleLabels, ticketLength) => {
+const getLabels = possibleLabels => {
   const knownCategories = possibleLabels
     .filter(p => p.length === 1)
     .map(p => p[0])
 
-  if (knownCategories.length === ticketLength) {
+  if (knownCategories.length === possibleLabels.length) {
     return possibleLabels
   }
 
   return getLabels(
     possibleLabels.map(p =>
       p.length === 1 ? p : p.filter(q => !knownCategories.includes(q))
-    ),
-    ticketLength
+    )
   )
 }
 
@@ -54,7 +53,7 @@ const startLabels = myTicket.map((_, i) =>
     .map(r => r.rule)
 )
 
-const labels = getLabels(startLabels, myTicket.length)
+const labels = getLabels(startLabels)
 const myTicketWithLabels = myTicket.map((t, i) => [...labels[i], t])
 
 console.log({
