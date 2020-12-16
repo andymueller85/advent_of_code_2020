@@ -44,7 +44,7 @@ const getLabels = (possibleLabels, ticketLength) => {
   )
 }
 
-let startTicketPositions = myTicket.map((_, i) =>
+const startLabels = myTicket.map((_, i) =>
   rules
     .filter(r =>
       goodTickets
@@ -54,7 +54,7 @@ let startTicketPositions = myTicket.map((_, i) =>
     .map(r => r.rule)
 )
 
-const labels = getLabels(startTicketPositions, myTicket.length)
+const labels = getLabels(startLabels, myTicket.length)
 const myTicketWithLabels = myTicket.map((t, i) => [...labels[i], t])
 
 console.log({
