@@ -1,4 +1,4 @@
-// slow - never finished for 3,000,000
+// slow - never finished for 30,000,000
 const numbers = [0, 3, 6]
 const lastItem = a => a[a.length - 1]
 
