@@ -20,11 +20,11 @@ const goodTickets = nearbyTicketsGr
   .slice(1)
   .map(t => t.split(',').map(n => parseInt(n)))
   .filter(t =>
-    t.every(n => {
-      return rules.some(r =>
+    t.every(n =>
+      rules.some(r =>
         r.ranges.some(([lower, upper]) => n >= lower && n <= upper)
       )
-    })
+    )
   )
 
 const getLabels = possibleLabels => {
