@@ -12,6 +12,26 @@ const inactiveGridRow = length => Array.from({ length }, _ => '.')
 const inactiveGrid = (numRows, rowLength) =>
   Array.from({ length: numRows }, a => inactiveGridRow(rowLength))
 
+const oneUpGrid = grid => {
+  const len = grid.length
+  const newGrid = [[]]
+
+  for (let rowI = 0; rowI < len + 2; rowI++) {
+    if (rowI === 0 || rowI === len + 1) newGrid[rowI] = inactiveGridRow(len + 2)
+    else {
+      newGrid[rowI] = Array.from({ length: len + 2 }, (_, colI) =>
+        colI === 0 || colI === len + 1 ? '.' : grid[rowI - 1][colI - 1]
+      )
+    }
+  }
+  return newGrid
+}
+
+// [z][y][x]
+const startingGrid = Array.from({ length: 3 }, (_, i) =>
+  i === 1 ? oneUpGrid(input) : inactiveGrid(input.length + 2, input.length + 2)
+)
+
 let xBoundaries = [input[0][0].length, 0]
 let yBoundaries = [input[0].length, 0]
 let zBoundaries = [input.length, 0]
@@ -126,7 +146,7 @@ const getNextGrid = curState =>
     )
   )
 
-let grid = resizeGrid(input)
+let grid = [...startingGrid]
 for (let i = 0; i < TURNS; i++) {
   grid = getNextGrid(grid)
 }
