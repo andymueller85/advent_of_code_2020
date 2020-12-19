@@ -1,5 +1,5 @@
-const TIMES = '*'
-const PLUS = '+'
+const MULTIPLY = '*'
+const ADD = '+'
 const OPEN_PAREN = '('
 const CLOSED_PAREN = ')'
 const parenIsOpen = stack =>
@@ -7,7 +7,7 @@ const parenIsOpen = stack =>
   stack.filter(s => s === CLOSED_PAREN).length
 const itemFound = v => v !== -1
 const getNums = arr => arr.map(a => parseInt(a)).filter(a => !isNaN(a))
-const getOperands = arr => arr.filter(a => [PLUS, TIMES].includes(a))
+const getOperands = arr => arr.filter(a => [ADD, MULTIPLY].includes(a))
 
 const part1Math = arr => {
   const nums = getNums(arr)
@@ -17,8 +17,8 @@ const part1Math = arr => {
   let num = nums.shift()
 
   operands.forEach(o => {
-    if (o === PLUS) result += num
-    if (o === TIMES) result *= num
+    if (o === ADD) result += num
+    if (o === MULTIPLY) result *= num
     num = nums.shift()
   })
 
@@ -31,19 +31,23 @@ const part2Math = arr => {
 
   // find groups of plusses and process them, then put them back in their place.
   let parenGroup = [...arr]
-  let i = operands.findIndex(o => o === PLUS)
+  let i = operands.findIndex(o => o === ADD)
   while (itemFound(i)) {
-    const nextTimes = operands.findIndex((o, idx) => idx > i && o === TIMES)
+    const nextMultiply = operands.findIndex(
+      (o, idx) => idx > i && o === MULTIPLY
+    )
 
     parenGroup[i * 2] = nums
-      .slice(i, nextTimes === -1 ? operands.length + 1 : nextTimes + 1)
+      .slice(i, nextMultiply === -1 ? operands.length + 1 : nextMultiply + 1)
       .reduce((sum, n) => sum + n)
 
-    const grEnd = itemFound(nextTimes) ? nextTimes * 2 + 1 : parenGroup.length
+    const grEnd = itemFound(nextMultiply)
+      ? nextMultiply * 2 + 1
+      : parenGroup.length
     for (let j = i * 2 + 1; j < grEnd; j++) parenGroup[j] = '$' // just a placeholder value, no significance
 
     i = operands.findIndex(
-      (o, idx) => itemFound(nextTimes) && idx > nextTimes && o === PLUS
+      (o, idx) => itemFound(nextMultiply) && idx > nextMultiply && o === ADD
     )
   }
 
@@ -58,22 +62,15 @@ const processGroup = (result, stack, mathFn) => {
   else result.push(groupResult)
 }
 
-const go = (input, mathFn) => {
-  let results = []
-
-  input.forEach(equation => {
+const processInput = (input, mathFn) =>
+  input.map(equation => {
     let equationResult = []
     let stack = []
 
     const eqArr = [...equation].filter(c => c !== ' ')
-
-    eqArr.forEach((c, i, a) => {
-      if (stack.length === 0) {
-        if (c === OPEN_PAREN) {
-          stack.push(c)
-        } else {
-          equationResult.push(c)
-        }
+    eqArr.forEach(c => {
+      if (stack.length === 0 && c !== OPEN_PAREN) {
+        equationResult.push(c)
       } else if (c === CLOSED_PAREN) {
         processGroup(equationResult, stack, mathFn)
       } else {
@@ -81,12 +78,8 @@ const go = (input, mathFn) => {
       }
     })
 
-    results.push(part1Math(equationResult))
-    equationResult.splice(0, equationResult.length)
+    return part1Math(equationResult)
   })
-
-  return results
-}
 
 const reduceResults = results => results.reduce((sum, r) => sum + r)
 const input = require('fs')
@@ -94,10 +87,10 @@ const input = require('fs')
   .split(/\r?\n/)
   .filter(d => d)
 
-const part1Results = go(input, part1Math)
+const part1Results = processInput(input, part1Math)
 const part1Answer = reduceResults(part1Results)
 
-const part2Results = go(input, part2Math)
+const part2Results = processInput(input, part2Math)
 const part2Answer = reduceResults(part2Results)
 
 console.log({ part1Answer, part2Answer })
