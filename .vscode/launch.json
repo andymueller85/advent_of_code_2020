@@ -147,16 +147,9 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Day 18a",
+      "name": "Day 18",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/day_18/day_18a.js"
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Day 18b",
-      "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/day_18/day_18b.js"
+      "program": "${workspaceFolder}/day_18/day_18.js"
     }
   ]
 }
