@@ -3,19 +3,13 @@ const input = require('fs')
   .split(/\r?\n/)
   .filter(d => d)
 
-console.log({ input })
-
-let stack = []
-let holdValues = []
 let results = []
-let result = []
 const TIMES = '*'
 const PLUS = '+'
 const OPEN_PAREN = '('
 const CLOSED_PAREN = ')'
 const isOperand = v => [TIMES, PLUS].includes(v)
-const stackIsEmpty = () => stack.length === 0
-const parenIsOpen = () =>
+const parenIsOpen = stack =>
   stack.filter(s => s === OPEN_PAREN).length >
   stack.filter(s => s === CLOSED_PAREN).length
 
@@ -29,66 +23,45 @@ const doMath = arr => {
   operands.forEach(o => {
     if (o === PLUS) result += num
     if (o === TIMES) result *= num
-
     num = nums.shift()
   })
 
   return result
 }
 
-const processGroup = endOfInput => {
-  // can probably just slice instead of this holder nonsense
-  let holder = []
-  let popped = ''
-  while (popped !== OPEN_PAREN) {
-    popped = stack.pop()
-    holder.push(popped)
-  }
-
-  const groupResult = doMath(holder.filter(h => h !== OPEN_PAREN).reverse())
-  if (parenIsOpen()) {
+const processGroup = (result, stack) => {
+  const groupResult = doMath(
+    stack.splice(stack.lastIndexOf(OPEN_PAREN)).filter(h => h !== OPEN_PAREN)
+  )
+  if (parenIsOpen(stack)) {
     stack.push(groupResult)
   } else {
-    // add to result
     result.push(groupResult)
   }
-
-  holder.splice(0, holder.length)
 }
 
-input.forEach((equation, idx) => {
+input.forEach(equation => {
+  let equationResult = []
+  let stack = []
+
   const eqArr = [...equation].filter(c => c !== ' ')
 
   eqArr.forEach((c, i, a) => {
-    if (stackIsEmpty()) {
-      if (c === OPEN_PAREN) stack.push(c)
-      else result.push(c)
-    } else if (parenIsOpen()) {
-      if (c === CLOSED_PAREN) {
-        processGroup(
-          i === a.length - 1 || a.slice(i).every(a => a === CLOSED_PAREN)
-        )
+    if (stack.length === 0) {
+      if (c === OPEN_PAREN) {
+        stack.push(c)
       } else {
-        if (isOperand(c) && stack[stack.length - 1] === OPEN_PAREN) {
-          result.push(c)
-        } else {
-          stack.push(c)
-        }
+        equationResult.push(c)
       }
+    } else if (c === CLOSED_PAREN) {
+      processGroup(equationResult, stack)
     } else {
-      result.push(c)
+      stack.push(c)
     }
   })
 
-  if (stack.length > 0) {
-    processGroup()
-  }
-
-  result = result.concat(doMath(holdValues))
-  results.push(doMath(result))
-
-  // reset things
-  result.splice(0, result.length)
+  results.push(doMath(equationResult))
+  equationResult.splice(0, equationResult.length)
 })
 
 const answer = results.reduce((sum, r) => sum + r)
