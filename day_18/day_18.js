@@ -54,7 +54,7 @@ const part2Math = arr => {
   return parenGroup.filter(a => !isNaN(a)).reduce((total, cur) => total * cur)
 }
 
-const processGroup = (result, stack, mathFn) => {
+const processGroup = (result, stack) => {
   const groupResult = mathFn(
     stack.splice(stack.lastIndexOf(OPEN_PAREN)).filter(h => h !== OPEN_PAREN)
   )
